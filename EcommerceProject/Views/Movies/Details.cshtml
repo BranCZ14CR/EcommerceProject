@@ -1,0 +1,91 @@
+﻿@model Movie
+
+@{
+    ViewData["Title"] = "Detalle de Película";
+}
+
+
+<div class="row">
+        <div class="col-md-8 offset-2">
+            <div class="card mb-12" >
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white text-center" style="background-color: #FFC107 !important">
+                            <p class="card-text">
+                                <h5 class="card-title">
+                                    @Model.Nombre                                    
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <img src="@Model.ImagenURL" alt="@Model.Nombre" style="max-width: 100%">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text text-justify" >@Model.Descripcion</p>
+                            <p class="card-text text-justify"><b>Cine: </b>
+                                <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@Model.CinemaId"> @Model.Cinema.Nombre </a>
+                            </p>
+                            <p class="card-text text-justify"><b>Productor: </b>
+                                <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.ProducerId"> @Model.Producer.Nombre </a>
+                            </p>
+                            <p class="card-text text-justify" ><b>Categoría: </b>@Model.CategoriaPelicula</p>
+                            <p class="card-text text-justify"><b>Inicio: </b>@Model.FechaInicio.ToString("dd MMM yyyy")</p>
+                            <p class="card-text text-justify"><b>Final: </b>@Model.FechaFinal.ToString("dd MMM yyyy")</p>
+                            <p class="card-text text-justify"><b>Precio: </b>@Model.Precio.ToString("c")</p>
+
+                            <p class="card-text ">
+                                <b>Estado: </b>
+                                @if (DateTime.Now >= Model.FechaInicio && DateTime.Now <= Model.FechaFinal)
+                                {
+                                    <span class="badge bg-success text-white">Disponible</span>
+                                }
+                                else if (DateTime.Now > Model.FechaFinal)
+                                {
+                                    <span class="badge bg-danger text-white">Expirada</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-primary text-white">Próximamente</span>
+                                }
+                            </p>
+                            <p  class="card-text "> 
+                                 <b>Actores: </b>
+                                 <hr />
+                                 <div class="row">
+                                   @foreach (var actor in Model.Actors_Movies)
+                                   {
+                                       <div class="columns text-center">
+                                           <img class="border-info rounded-circle" src="@actor.Actor.Imagen" style="max-width: 150px" />
+                                           <br>
+                                           <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId">@actor.Actor.Nombre</a>
+                                       </div>
+                                   }
+                                 </div>
+                            </p>
+
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+
+                                <a class="btn btn-info float-right text-white" title="Lista de Película" asp-action="Index">
+                                    <i class="fa-solid fa-arrow-rotate-left"></i>
+                                </a>
+
+                                <a title="Añadir al Carrito" class="btn btn-success text-white @((DateTime.Now > Model.FechaFinal) ? "disabled" : "")" 
+                                   asp-controller="Orders" 
+                                   asp-action="AddToShoppingCart" 
+                                   asp-route-id="@Model.Id">
+                                <i class="fa-solid fa-cart-arrow-down"></i> </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+</div>
+

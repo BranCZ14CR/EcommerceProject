@@ -1,0 +1,46 @@
+﻿@inject UserManager<ApplicationUser> UserManager;
+
+@if (!User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-success my-2 my-sm-0 m-2" title="Iniciar Sesión" asp-controller="Account" asp-action="Login">
+      <i class="fa-solid fa-user-check"></i>
+    </a>
+    <span style="padding: 5px;"></span>
+
+    <a class="btn btn-primary my-2 my-sm-0 m-2" style="background-color: #9E9E9E"  title="Registrarse" asp-controller="Account" asp-action="Register">
+        <i class="fa-solid fa-address-card"></i>
+    </a>
+}
+else
+{
+    @*User profile section*@
+    <div class="dropdown m-2">
+        <button class="btn dropdown-toggle" style="background-color: #FFC107" type="button" id="profile-btn" data-toggle="dropdown" aria-expanded="false">
+            Hola @UserManager.GetUserName(User)
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="profile-btn">
+            <li>
+                <a class="dropdown-item" asp-controller="Orders" asp-action="Index">
+                   <i class="fa-solid fa-table-list"></i> Ordenes
+                </a>
+            </li>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <li>
+                    <a class="dropdown-item"  title="Usuarios" asp-controller="Account" asp-action="Users">
+                       <i class="fa-solid fa-users"></i> Usuarios
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    <span style="padding: 5px;"></span>
+
+    <form asp-controller="Account" title="Cerrar Sesión"asp-action="Logout">
+        <button class="btn btn-danger my-2 my-sm-0 m-2">
+           <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+    </form>
+}

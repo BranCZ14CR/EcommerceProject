@@ -8,6 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EcommerceProject.Data;
+using Microsoft.EntityFrameworkCore;
+using EcommerceProject.Data.Services;
+using Microsoft.AspNetCore.Http;
+using EcommerceProject.Data.Cart;
+using EcommerceProject.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace EcommerceProject
 {
@@ -23,6 +31,24 @@ namespace EcommerceProject
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Agregar la configuracion del DBContext
+            services.AddDbContext<EcommerceDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("EcommerceConnectionString")));
+
+            //Configuracion de los Servicios
+            services.AddScoped<IMovieServices, MoviesService>();
+            services.AddScoped<IOrdersService, OrdersService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped(sc => ShoppingCart.GetShoppingCart(sc));
+
+            //Configurar la autenticacion y autorizacion
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<EcommerceDbContext>();
+            services.AddMemoryCache();
+            services.AddSession();
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            });
+
             services.AddControllersWithViews();
         }
 
@@ -43,6 +69,11 @@ namespace EcommerceProject
             app.UseStaticFiles();
 
             app.UseRouting();
+            app.UseSession();
+
+            //Autenticacion y Autorización
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseAuthorization();
 
@@ -52,6 +83,9 @@ namespace EcommerceProject
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            AppDbInitializer.SeedUsersAndRolesAsync(app).Wait();
+
         }
     }
 }

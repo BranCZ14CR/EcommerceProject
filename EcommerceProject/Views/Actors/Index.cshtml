@@ -1,0 +1,51 @@
+﻿@model IEnumerable<EcommerceProject.Models.Actor>
+
+@{
+    ViewData["Title"] = "Lista de Actores";
+}
+
+<h1 class="col-12 mx-auto text-center">Lista de Actores</h1>
+
+<div class="row mx-auto">
+    <div class="row mt-3 mb-5 mr-0 ml-0 mx-auto">
+       @foreach (var actor in Model)
+       {
+           <div class="col-12 col-sm-8 col-md-5 col-lg-5 col-xl-3 mt-4 mx-auto">
+                <div class="card" style="align-items: center;height: 570px;">
+                    <img  src="@actor.Imagen" class="card-img-top" alt="Imagen de @actor.Nombre"  style="height: 250px">
+
+                    <div class="card-body text-center">
+                        <h5 class="card-title">@Html.DisplayFor(model => actor.Nombre)</h5>
+
+                        <p class="card-text">@Html.DisplayFor(model => actor.Biografia)</p>
+
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                        {
+                            <a class="btn btn-primary m-2 text-white" title="Editar"asp-action="Edit" asp-route-id="@actor.ActorId"> 
+                                <i class="fa-solid fa-pencil"></i>  
+                            </a>
+
+                            <a class="btn btn-info m-2 text-white" title="Detalle" asp-action="Details" asp-route-id="@actor.ActorId"> 
+                                <i class="fa-sharp fa-solid fa-eye"></i>  
+                            </a>
+
+                            <a class="btn btn-danger m-2 text-white" title="Eliminar"  asp-action="Delete" asp-route-id="@actor.ActorId"> 
+                                <i class="fa-solid fa-trash"></i>  
+                            </a>
+                        }
+
+                       
+                    </div>
+                </div>
+           </div>           
+       }  
+    </div>
+</div>
+
+ @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+{
+    <div style="position: fixed; right: 25px; bottom: 25px; z-index: 999;" class="text-white">
+        <a asp-action="Create" class="btn btn-success" title="Agregar Actor"><i class="fa-solid fa-user-plus"></i></a>
+    </div>
+}
+

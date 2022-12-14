@@ -1,0 +1,58 @@
+﻿@model EcommerceProject.Models.Actor
+
+@{
+    ViewData["Title"] = "Detalle del Actor";
+}
+
+<h1 class="col-12 text-center">Actor @Model.Nombre</h1>
+
+<div class="row mx-auto">
+    <div class="col-md-6 offset-2 mx-auto">
+
+            <div class="form-group text-center">
+                <img id="ImagenPreview" class="border-info rounded-circle" style="height: 350px; max-width: 350px"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Imagen" class="control-label"></label>
+                <input asp-for="Imagen" class="form-control" readonly/>
+                <span asp-validation-for="Imagen" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" readonly/>
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Biografia" class="control-label"></label>
+                <input asp-for="Biografia" class="form-control" readonly/>
+                <span asp-validation-for="Biografia" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                 
+                <a class="btn btn-secondary" title="Regresar" asp-action="Index"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+                
+                @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <a class="btn text-white" style="background-color: #FFA000"  asp-action="Edit" asp-route-id="@Model.ActorId"><i class="fa-solid fa-pencil"></i> Editar </a>
+                }           
+
+            </div>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function(){
+            const output = document.getElementById('ImagenPreview');
+            output.src = $("#Imagen").val();
+        })       
+    </script>
+}

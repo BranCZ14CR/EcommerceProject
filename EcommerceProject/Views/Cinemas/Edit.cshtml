@@ -1,0 +1,62 @@
+﻿@model EcommerceProject.Models.Cinema
+
+@{
+    ViewData["Title"] = "Editar Cinema";
+}
+
+<h1 class="col-12 text-center">Editar Cinema @Model.Nombre</h1>
+
+<div class="row mx-auto">
+    <div class="col-md-6 offset-2 mx-auto">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CinemaId" />
+
+            <div class="form-group text-center">
+                <img id="ImagenPreview" class="border-info rounded-circle" style="height: 350px; max-width: 350px"/>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Logo" class="control-label"></label>
+                <input asp-for="Logo" class="form-control" />
+                <span asp-validation-for="Logo" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Descripcion" class="control-label"></label>
+                <input asp-for="Descripcion" class="form-control" />
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: flex; align-items: center; justify-content: space-between;">
+                <a class="btn btn-secondary" title="Regresar" asp-action="Index"><i class="fa-solid fa-arrow-rotate-left"></i></a>
+                <input type="submit" value="Editar Cinema" class="btn text-white" style="background-color: #FFA000" />
+
+            </div>
+
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(document).ready(function(){
+            const output = document.getElementById('ImagenPreview');
+            output.src = $("#Logo").val();
+        })
+
+        $("#Logo").on("change", function(){
+            const output = document.getElementById('ImagenPreview');
+            output.src = $(this).val();
+        })
+    </script>
+}
