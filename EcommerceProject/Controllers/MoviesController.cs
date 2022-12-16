@@ -62,17 +62,10 @@ namespace EcommerceProject.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return View("NotFound");
-            }
-
+          
             var movieDetail = await _service.GetMovieByIdAsync(id);
 
-            if (movieDetail == null)
-            {
-                return View("NotFound");
-            }
+           
 
             return View(movieDetail);
         }

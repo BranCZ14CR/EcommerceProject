@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceProject.Controllers
 {
-    [Authorize(Roles = UserRoles.Admin)]
+    [Authorize]
     public class OrdersController : Controller
     {
         //Variables

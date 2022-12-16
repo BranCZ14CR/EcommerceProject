@@ -67,11 +67,15 @@
                                     <i class="fa-solid fa-circle-info"></i>
                                 </a>
 
-                                <a title="Añadir al Carrito" class="btn btn-success text-white @((DateTime.Now > item.FechaFinal) ? "disabled" : "")" 
-                                   asp-controller="Orders" 
-                                   asp-action="AddToShoppingCart" 
-                                   asp-route-id="@item.Id">
-                                <i class="fa-solid fa-cart-arrow-down"></i> </a>
+                                @if (User.Identity.IsAuthenticated)
+                                {
+                                     <a title="Añadir al Carrito" class="btn btn-success text-white @((DateTime.Now > item.FechaFinal) ? "disabled" : "")" 
+                                       asp-controller="Orders" 
+                                       asp-action="AddToShoppingCart" 
+                                       asp-route-id="@item.Id">
+                                    <i class="fa-solid fa-cart-arrow-down"></i> </a>
+                                }
+                               
                             </p>
                         </div>
                     </div>
